@@ -1,0 +1,61 @@
+Implement a py application for Hospital Management Sysyem, build a HMS Image and deploy it using docker Desktop. Upload HMS with Image in Github repository.
+
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+# In-memory database simulation
+patients = {}
+
+@app.route('/patients', methods=['POST'])
+def add_patient():
+    patient_id = request.json['id']
+    patient_info = request.json['info']
+    patients[patient_id] = patient_info
+    return jsonify({"message": "Patient added successfully"}), 201
+
+@app.route('/patients', methods=['GET'])
+def get_patients():
+    return jsonify(patients)
+
+@app.route('/patients/<int:patient_id>', methods=['DELETE'])
+def delete_patient(patient_id):
+    if patient_id in patients:
+        del patients[patient_id]
+        return jsonify({"message": "Patient deleted successfully"}), 200
+    else:
+        return jsonify({"message": "Patient not found"}), 404
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
+
+
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make port 5000 available to the world outside this container
+EXPOSE 5000
+
+# Run app.py when the container launches
+CMD ["python", "app.py"]
+
+
+docker build -t hospital_management_system .
+docker run -p 5000:5000 hospital_management_system
+git init
+git add .
+git commit -m "Initial commit of Hospital Management System"
+git remote add origin https://github.com/yourusername/hospital_management_system.git
+git branch -M main
+git push -u origin main
+docker tag hospital_management_system yourusername/hospital_management_system
+docker login
