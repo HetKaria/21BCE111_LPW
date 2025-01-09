@@ -3,7 +3,7 @@ from flask import redirect, render_template, Response, Flask
 app = Flask(__name__)
 
 # Hello from Git
-# Hello from Mac
+# Hello from Mac``
 
 @app.route("/")
 def index():
