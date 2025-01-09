@@ -4,6 +4,7 @@ app = Flask(__name__)
 
 # Hello from Git
 # Hello from Mac``
+# very good stuff
 
 @app.route("/")
 def index():
@@ -20,8 +21,6 @@ def add_Patients():
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
 
-
-# Try for the multiple commits
 
 
 # Hello
